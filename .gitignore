@@ -4,6 +4,7 @@ lib/
 devel/
 data/templates
 data/test
+
 *.aux
 *.dvi
 *.log
@@ -20,9 +21,9 @@ data/test
 *.dia~
 *.txt.user
 *.ps
-
+msg_gen/
 img/
-
+*.pyc
 msg_gen/*
 src/ocular/*
 

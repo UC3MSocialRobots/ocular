@@ -7,6 +7,7 @@
 #include <ocular/RecognizedObject.h>
 #include <ros/ros.h>
 #include <ocular/EventHandler.h>
+#include <ocular/LearningFinished.h>
 
 class LearnerRecognizerNode
 {
@@ -22,14 +23,13 @@ private:
     ros::Subscriber event_sub;
 
     ros::Publisher object_pub;
-
-
+    ros::Publisher learned_pub;
 
     void descriptors2D_cb(const ocular::HandImageConstPtr & );
 
-    void descriptors3D_cb(const sensor_msgs::PointCloud2ConstPtr & );
+    void descriptors3D_cb(const pcl::PCLPointCloud2ConstPtr & );
 
-    void resulting_id(string name);
+    void resulting_id(std::string name);
 
     void train3D_cb();
 
@@ -50,8 +50,14 @@ private:
     bool learn_2D; /** Boolean that is true when the received event is learn and false otherwise*/
     bool learn_3D; /** Boolean that is true when the received event is learn and false otherwise*/
 
-    std::vector <std::pair <int, float> >object_id_2D;
-    std::vector<std::pair <int, float> >object_id_3D;
+/*
+<<<<<<< HEAD:src/libraries/nodes/LearnerRecognizerNode.h
+    std::pair <int, float> object_id_2D;
+    std::pair <int, float> object_id_3D;
+=======
+*/
+    std::vector< std::pair<int, float> > object_id_2D;
+    std::vector< std::pair<int, float> > object_id_3D;
 
     std::pair <int, float> last_object_id_2D;
     std::pair <int, float> last_object_id_3D;

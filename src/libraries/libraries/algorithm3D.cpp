@@ -22,7 +22,9 @@ Algorithm3D::~Algorithm3D()
         }
         else
         {
+
             dataparser.save_template(descriptors[i],i);
+
             std::cerr<<"    template: "<<i<<" , number of views: "<<descriptors[i].size()<<std::endl<<std::flush;
         }
     }
@@ -43,9 +45,8 @@ void Algorithm3D::load_templates()
 
 void Algorithm3D::next_object()
 {
-    descriptors.push_back(std::vector<sensor_msgs::PointCloud2> ());
+    descriptors.push_back(std::vector<pcl::PCLPointCloud2> ());
     this->object_number=descriptors.size()-1;
-
 }
 
 void Algorithm3D::set_number_views (int number_views)
@@ -54,7 +55,8 @@ void Algorithm3D::set_number_views (int number_views)
 }
 
 
-int Algorithm3D::add_descriptors(sensor_msgs::PointCloud2 msg)
+int Algorithm3D::add_descriptors(
+        pcl::PCLPointCloud2  msg)
 {
     //    std::cerr<<"add descriptors 3D: data.empty?: "<<msg.data.empty()<<" object_number: "<<this->object_number<<" descriptors.size: "<<descriptors.size()<<std::endl<<std::flush;
 
@@ -68,7 +70,8 @@ int Algorithm3D::add_descriptors(sensor_msgs::PointCloud2 msg)
 }
 
 
-std::pair <int, float> Algorithm3D::match(const sensor_msgs::PointCloud2ConstPtr & msg)
+std::pair <int, float> Algorithm3D::match(const pcl::PCLPointCloud2ConstPtr & msg)
+//std::pair <int, float> Algorithm3D::match(const sensor_msgs::PointCloud2ConstPtr & msg)
 {
 
     //    PFH:
@@ -144,18 +147,15 @@ std::pair <int, float> Algorithm3D::match(const sensor_msgs::PointCloud2ConstPtr
         this->matched_object_ratio=-1;
     }
 
-//    if(matched_object_id>0)
-//        std::cerr<<"ratio[max_elem]: "<<ratio[matched_object_id]<<std::endl;
+    if(matched_object_id>0)
+        ROS_DEBUG_STREAM("ratio[max_elem]: " << ratio[matched_object_id]);
 
-//    for (int k=0; k<ratio.size(); k++)
-//        std::cerr<<"ratio[]: "<<ratio[k]<<std::endl;
+    for (int k=0; k<ratio.size(); k++)
+        ROS_DEBUG_STREAM("ratio[]: " << ratio[k]);
 
-//    std::cerr<<"3d matched_object_ratio: "<<matched_object_ratio<<std::endl;
+    ROS_INFO_STREAM("ratio[matched_object_id]: " << ratio[matched_object_id]);
 
-
-    return std::make_pair(matched_object_id, matched_object_ratio);
-
-
+    return std::make_pair(matched_object_id, ratio[matched_object_id]);
 }
 
 int Algorithm3D::get_number_template()
